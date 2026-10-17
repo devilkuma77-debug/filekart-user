@@ -195,7 +195,7 @@ function ShopContent() {
       )}
 
       {/* Flipkart Modals */}
-      <LoginModal />
+      <LoginModal onNavigate={navigateTo} />
       <SellerModal isOpen={isSellerModalOpen} onClose={() => setIsSellerModalOpen(false)} />
       <HelpCenterModal isOpen={isHelpModalOpen} onClose={() => setIsHelpModalOpen(false)} />
       <LocationModal

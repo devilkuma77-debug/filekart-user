@@ -1988,9 +1988,20 @@ html, body {
   }
 }
 
+/* ================= OTP TOP ALERT BANNER ================= */
+@keyframes slideDownAlert {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -24px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
 
-
-
-
-
+.otp-top-alert-banner {
+  animation: slideDownAlert 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
 

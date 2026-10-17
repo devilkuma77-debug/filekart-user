@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useShop } from '../context/ShopContext';
 import { api } from '../services/api';
-import { X, ArrowLeft } from 'lucide-react';
+import { X, ArrowLeft, Copy, Check, Smartphone, Clock } from 'lucide-react';
 
 // Official Flipkart Mobile Header Logo with Yellow Shopping Bag
 const FlipkartMobileHeaderLogo = () => (
@@ -37,7 +37,7 @@ const FlipkartMobileHeaderLogo = () => (
   </div>
 );
 
-export default function LoginModal() {
+export default function LoginModal({ onNavigate }) {
   const { isLoginModalOpen, closeLoginModal, loginUser, showToast } = useShop();
 
   const [inputMethod, setInputMethod] = useState('phone'); // 'phone' or 'email'
@@ -50,6 +50,133 @@ export default function LoginModal() {
   const [mode, setMode] = useState('otp_request'); // 'otp_request', 'otp_verify', 'password_login'
   const [loading, setLoading] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
+
+  // OTP Alert, Copy & Auto-Fill states
+  const [generatedOtp, setGeneratedOtp] = useState('789123');
+  const [countdown, setCountdown] = useState(3);
+  const [copied, setCopied] = useState(false);
+  const isSubmittingRef = useRef(false);
+
+  const handleClose = () => {
+    closeLoginModal();
+    setMode('otp_request');
+    setOtp('');
+    setCountdown(3);
+    setCopied(false);
+    isSubmittingRef.current = false;
+  };
+
+  useEffect(() => {
+    if (!isLoginModalOpen) {
+      setMode('otp_request');
+      setOtp('');
+      setCountdown(3);
+      setCopied(false);
+      isSubmittingRef.current = false;
+    }
+  }, [isLoginModalOpen]);
+
+  // 2-3 Second Auto-Fill and Home Move Timer
+  useEffect(() => {
+    if (!isLoginModalOpen || mode !== 'otp_verify') {
+      return;
+    }
+
+    if (countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && !isSubmittingRef.current) {
+      performVerification(generatedOtp);
+    }
+  }, [isLoginModalOpen, mode, countdown, generatedOtp]);
+
+  const performVerification = async (codeToVerify) => {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+
+    const finalOtp = (codeToVerify || otp || generatedOtp).toString().trim();
+    setOtp(finalOtp);
+    setLoading(true);
+
+    try {
+      const currentContact = contact || (inputMethod === 'phone' ? phone : email);
+      const res = await api.verifyOtp(currentContact, finalOtp, name);
+      if (res && res.success) {
+        loginUser(res.token, res.user);
+        handleClose();
+        showToast('Logged in successfully!', 'success');
+        if (onNavigate) {
+          onNavigate('home');
+        }
+        return;
+      } else {
+        showToast(res?.message || 'Verification failed', 'error');
+        isSubmittingRef.current = false;
+      }
+    } catch {
+      // Fallback demo user
+      const currentContact = contact || (inputMethod === 'phone' ? phone : email);
+      const isEmail = currentContact.includes('@');
+      const demoUser = {
+        id: 99,
+        name: name || (isEmail ? currentContact.split('@')[0] : `User_${currentContact.slice(-4)}`),
+        email: isEmail ? currentContact : `${currentContact}@flipkart-user.com`,
+        phone: isEmail ? '9888888888' : currentContact,
+        role: 'customer'
+      };
+      loginUser('demo_token_123', demoUser);
+      handleClose();
+      showToast('Logged in successfully!', 'success');
+      if (onNavigate) {
+        onNavigate('home');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCopyOtp = async () => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(generatedOtp);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = generatedOtp;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+    } catch (e) {
+      console.warn('Clipboard write failed:', e);
+    }
+
+    setCopied(true);
+    setOtp(generatedOtp);
+    showToast(`OTP ${generatedOtp} copied! Logging in...`, 'success');
+
+    // Trigger instant verification & navigation forward
+    setTimeout(() => {
+      performVerification(generatedOtp);
+    }, 350);
+  };
+
+  const handleManualOtpChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+    setOtp(val);
+    if (val.length === 6 && !isSubmittingRef.current) {
+      setTimeout(() => {
+        performVerification(val);
+      }, 300);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    performVerification(otp);
+  };
 
   if (!isLoginModalOpen) return null;
 
@@ -77,54 +204,22 @@ export default function LoginModal() {
 
     setContact(targetContact);
     setLoading(true);
+    isSubmittingRef.current = false;
     try {
       const res = await api.sendOtp(targetContact);
-      if (res.success) {
-        setMode('otp_verify');
-        showToast(res.message || 'OTP sent! Use demo OTP 789123', 'success');
-      } else {
-        showToast(res.message || 'Error sending OTP', 'error');
-      }
+      const returnedOtp = res?.demoOtp || '789123';
+      setGeneratedOtp(returnedOtp);
+      setCountdown(3);
+      setCopied(false);
+      setMode('otp_verify');
+      showToast(res?.message || `OTP sent! Use demo OTP ${returnedOtp}`, 'success');
     } catch {
       // Offline fallback demo OTP
+      setGeneratedOtp('789123');
+      setCountdown(3);
+      setCopied(false);
       setMode('otp_verify');
       showToast('Demo Mode: Enter OTP 789123 to verify', 'info');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    if (!otp.trim()) {
-      showToast('Please enter the OTP', 'error');
-      return;
-    }
-    setLoading(true);
-    try {
-      const currentContact = contact || (inputMethod === 'phone' ? phone : email);
-      const res = await api.verifyOtp(currentContact, otp, name);
-      if (res.success) {
-        loginUser(res.token, res.user);
-        closeLoginModal();
-        showToast('Logged in successfully!', 'success');
-      } else {
-        showToast(res.message || 'Verification failed', 'error');
-      }
-    } catch {
-      // Fallback demo user
-      const currentContact = contact || (inputMethod === 'phone' ? phone : email);
-      const isEmail = currentContact.includes('@');
-      const demoUser = {
-        id: 99,
-        name: name || (isEmail ? currentContact.split('@')[0] : `User_${currentContact.slice(-4)}`),
-        email: isEmail ? currentContact : `${currentContact}@flipkart-user.com`,
-        phone: isEmail ? '9888888888' : currentContact,
-        role: 'customer'
-      };
-      loginUser('demo_token_123', demoUser);
-      closeLoginModal();
-      showToast('Logged in as demo user!', 'success');
     } finally {
       setLoading(false);
     }
@@ -142,8 +237,11 @@ export default function LoginModal() {
       const res = await api.login(currentContact, password);
       if (res.success) {
         loginUser(res.token, res.user);
-        closeLoginModal();
+        handleClose();
         showToast('Logged in successfully!', 'success');
+        if (onNavigate) {
+          onNavigate('home');
+        }
       } else {
         showToast(res.message || 'Login failed', 'error');
       }
@@ -165,13 +263,157 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="modal-overlay login-overlay" onClick={closeLoginModal}>
+    <div className="modal-overlay login-overlay" onClick={handleClose}>
+      {/* FLOATING TOP OTP ALERT BANNER */}
+      {mode === 'otp_verify' && (
+        <div
+          className="otp-top-alert-banner"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: 'fixed',
+            top: '14px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 100005,
+            width: 'calc(100% - 24px)',
+            maxWidth: '430px',
+            backgroundColor: '#0f172a',
+            border: '1.5px solid #38bdf8',
+            borderRadius: '12px',
+            boxShadow: '0 16px 36px -6px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.35)',
+            padding: '12px 14px',
+            color: '#ffffff',
+            boxSizing: 'border-box'
+          }}
+        >
+          {/* Top Header Row */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: '6px',
+                backgroundColor: '#ffe11b',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
+              }}>
+                <Smartphone size={14} color="#0f172a" strokeWidth={2.5} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#f8fafc', letterSpacing: '0.2px' }}>
+                  Flipkart OTP Verification
+                </span>
+                <span style={{ fontSize: '10px', color: '#94a3b8' }}>
+                  One Time Password • Valid for 5 mins
+                </span>
+              </div>
+            </div>
+
+            {/* Countdown Badge */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+              backgroundColor: 'rgba(251, 191, 36, 0.15)',
+              border: '1px solid rgba(251, 191, 36, 0.35)',
+              borderRadius: '20px',
+              padding: '3px 9px',
+              color: '#fbbf24',
+              fontSize: '11px',
+              fontWeight: 700
+            }}>
+              <Clock size={12} />
+              <span>{countdown > 0 ? `Auto in ${countdown}s` : 'Verifying...'}</span>
+            </div>
+          </div>
+
+          {/* OTP and Action Row */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: 'rgba(255, 255, 255, 0.06)',
+            borderRadius: '8px',
+            padding: '8px 12px',
+            marginTop: '4px'
+          }}>
+            <div>
+              <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.8px', color: '#94a3b8', fontWeight: 600 }}>
+                Your Login OTP
+              </div>
+              <div style={{
+                fontSize: '22px',
+                fontWeight: 800,
+                letterSpacing: '4px',
+                color: '#ffe11b',
+                fontFamily: 'monospace',
+                marginTop: '1px'
+              }}>
+                {generatedOtp}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleCopyOtp}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: copied ? '#16a34a' : '#ffe11b',
+                color: copied ? '#ffffff' : '#0f172a',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '8px 14px',
+                fontSize: '12px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                boxShadow: copied ? '0 2px 8px rgba(22, 163, 74, 0.4)' : '0 2px 8px rgba(255, 225, 27, 0.35)',
+                transition: 'all 0.2s ease',
+                letterSpacing: '0.5px'
+              }}
+            >
+              {copied ? (
+                <>
+                  <Check size={14} strokeWidth={3} />
+                  <span>COPIED</span>
+                </>
+              ) : (
+                <>
+                  <Copy size={14} strokeWidth={2.5} />
+                  <span>COPY</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Progress bar at bottom of banner */}
+          <div style={{
+            width: '100%',
+            height: '3px',
+            backgroundColor: 'rgba(255, 255, 255, 0.12)',
+            borderRadius: '2px',
+            marginTop: '10px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              backgroundColor: '#ffe11b',
+              width: `${Math.min(100, Math.max(0, ((3 - countdown) / 3) * 100))}%`,
+              transition: 'width 1s linear'
+            }} />
+          </div>
+        </div>
+      )}
+
       <div className="login-modal-box animate-fade-in" onClick={(e) => e.stopPropagation()}>
         
         {/* Desktop Close Button */}
         <button
           className="login-desktop-close"
-          onClick={closeLoginModal}
+          onClick={handleClose}
           aria-label="Close"
         >
           <X size={20} />
@@ -182,7 +424,13 @@ export default function LoginModal() {
           {mode === 'otp_verify' ? (
             <button
               type="button"
-              onClick={() => setMode('otp_request')}
+              onClick={() => {
+                setMode('otp_request');
+                setOtp('');
+                setCountdown(3);
+                setCopied(false);
+                isSubmittingRef.current = false;
+              }}
               style={{
                 background: 'transparent',
                 border: 'none',
@@ -200,7 +448,7 @@ export default function LoginModal() {
           ) : (
             <button
               type="button"
-              onClick={closeLoginModal}
+              onClick={handleClose}
               style={{
                 background: 'transparent',
                 border: 'none',
@@ -263,7 +511,13 @@ export default function LoginModal() {
                   </strong>
                   <button
                     type="button"
-                    onClick={() => setMode('otp_request')}
+                    onClick={() => {
+                      setMode('otp_request');
+                      setOtp('');
+                      setCountdown(3);
+                      setCopied(false);
+                      isSubmittingRef.current = false;
+                    }}
                     style={{
                       color: '#2874f0',
                       fontWeight: 600,
@@ -489,7 +743,7 @@ export default function LoginModal() {
                     maxLength={6}
                     value={otp}
                     autoFocus
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                    onChange={handleManualOtpChange}
                     style={{
                       width: '100%',
                       border: 'none',
@@ -504,16 +758,30 @@ export default function LoginModal() {
                       backgroundColor: 'transparent'
                     }}
                   />
+
+                  {/* Auto-fill Countdown Status Indicator */}
                   <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
                     fontSize: '12px',
-                    color: '#2e7d32',
-                    backgroundColor: '#e8f5e9',
-                    padding: '8px 12px',
-                    borderRadius: '4px',
-                    marginTop: '12px',
+                    color: '#1e40af',
+                    backgroundColor: '#eff6ff',
+                    border: '1px solid #bfdbfe',
+                    padding: '10px 14px',
+                    borderRadius: '6px',
+                    marginTop: '14px',
                     textAlign: 'center'
                   }}>
-                    💡 Tip: Default test OTP is <strong>789123</strong>
+                    <Clock size={15} color="#2563eb" />
+                    <span>
+                      {countdown > 0 ? (
+                        <>Auto-filling & moving to Home in <strong>{countdown}s</strong>...</>
+                      ) : (
+                        <strong>Auto-verifying and moving to Home...</strong>
+                      )}
+                    </span>
                   </div>
                 </div>
 
@@ -564,7 +832,12 @@ export default function LoginModal() {
                   Didn't receive code?{' '}
                   <button
                     type="button"
-                    onClick={handleRequestOtp}
+                    onClick={() => {
+                      setCountdown(3);
+                      setCopied(false);
+                      isSubmittingRef.current = false;
+                      handleRequestOtp();
+                    }}
                     style={{
                       background: 'transparent',
                       border: 'none',
