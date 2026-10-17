@@ -22,11 +22,9 @@ export default function SellerModal({ isOpen, onClose }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await api.createSupportTicket ? await fetch('http://localhost:5000/api/sellers/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      }).then(r => r.json()) : { success: true };
+      const res = api.registerSeller 
+        ? await api.registerSeller(formData) 
+        : { success: true };
 
       setSubmitted(true);
       showToast('Seller application submitted successfully! Our team will contact you.', 'success');

@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 function getHeaders() {
   const token = localStorage.getItem('fk_token');
@@ -154,6 +154,16 @@ export const api = {
     const res = await fetch(`${API_BASE}/support/tickets`, {
       method: 'POST',
       headers: getHeaders(),
+      body: JSON.stringify(data)
+    });
+    return await res.json();
+  },
+
+  // Sellers
+  async registerSeller(data) {
+    const res = await fetch(`${API_BASE}/sellers/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
     return await res.json();
