@@ -95,6 +95,38 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
     address_type: 'HOME'
   });
 
+  const [gatewaySettings, setGatewaySettings] = useState({
+    upi_id: 'flipkart.pay@okaxis',
+    upi_payee_name: 'Flipkart Internet Pvt Ltd',
+    upi_note: 'Flipkart Order Payment',
+    upi_gpay_vpa: 'flipkart.pay@okaxis',
+    upi_phonepe_vpa: 'flipkart.pay@ybl',
+    upi_paytm_vpa: 'flipkart.pay@paytm',
+    upi_qr_enabled: 'true',
+    gateway_upi_enabled: 'true',
+    gateway_cards_enabled: 'true',
+    gateway_netbanking_enabled: 'true',
+    gateway_cod_enabled: 'true'
+  });
+
+  // Load live Payment Gateway & UPI settings from backend
+  useEffect(() => {
+    async function loadGatewayConfig() {
+      try {
+        const res = await api.getSettings();
+        if (res && res.settings) {
+          setGatewaySettings(prev => ({
+            ...prev,
+            ...res.settings
+          }));
+        }
+      } catch (e) {
+        console.warn('Failed to load gateway config, using defaults:', e);
+      }
+    }
+    loadGatewayConfig();
+  }, []);
+
   // Live UPI Countdown Timer Effect
   useEffect(() => {
     let interval;
@@ -139,20 +171,23 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
       return;
     }
 
-    const payeeVpa = 'flipkart.pay@okaxis';
-    const payeeName = 'Flipkart Internet Pvt Ltd';
+    const payeeVpa = gatewaySettings.upi_id || 'flipkart.pay@okaxis';
+    const payeeName = gatewaySettings.upi_payee_name || 'Flipkart Internet Pvt Ltd';
     const amount = totals.finalPayable;
-    const note = `Flipkart Order`;
+    const note = gatewaySettings.upi_note || `Flipkart Order`;
 
     const genericLink = `upi://pay?pa=${encodeURIComponent(payeeVpa)}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
 
     let link = genericLink;
     if (option === 'GPay') {
-      link = `tez://upi/pay?pa=${encodeURIComponent(payeeVpa)}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+      const vpa = gatewaySettings.upi_gpay_vpa || payeeVpa;
+      link = `tez://upi/pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
     } else if (option === 'PhonePe') {
-      link = `phonepe://upi/pay?pa=${encodeURIComponent('flipkart.pay@ybl')}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+      const vpa = gatewaySettings.upi_phonepe_vpa || payeeVpa;
+      link = `phonepe://upi/pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
     } else if (option === 'Paytm') {
-      link = `paytmmp://upi/pay?pa=${encodeURIComponent('flipkart.pay@paytm')}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+      const vpa = gatewaySettings.upi_paytm_vpa || payeeVpa;
+      link = `paytmmp://upi/pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
     }
 
     setUpiDeepLink(link);
@@ -1164,8 +1199,16 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '11px', color: '#878787' }}>Payee: Flipkart Internet</div>
-                      <div style={{ fontSize: '11px', color: '#2874f0', fontWeight: 600 }}>flipkart.pay@okaxis</div>
+                      <div style={{ fontSize: '11px', color: '#878787' }}>Payee: {gatewaySettings.upi_payee_name || 'Flipkart Internet'}</div>
+                      <div style={{ fontSize: '11px', color: '#2874f0', fontWeight: 600 }}>
+                        {upiOption === 'GPay'
+                          ? (gatewaySettings.upi_gpay_vpa || gatewaySettings.upi_id || 'flipkart.pay@okaxis')
+                          : upiOption === 'PhonePe'
+                          ? (gatewaySettings.upi_phonepe_vpa || gatewaySettings.upi_id || 'flipkart.pay@ybl')
+                          : upiOption === 'Paytm'
+                          ? (gatewaySettings.upi_paytm_vpa || gatewaySettings.upi_id || 'flipkart.pay@paytm')
+                          : (gatewaySettings.upi_id || 'flipkart.pay@okaxis')}
+                      </div>
                     </div>
                   </div>
 

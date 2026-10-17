@@ -11,6 +11,7 @@ import {
   Warehouse,
   Truck,
   CreditCard,
+  QrCode,
   TicketPercent,
   Megaphone,
   Star,
@@ -42,7 +43,8 @@ export default function Sidebar({ activeTab, setActiveTab, onLogout, isOpen = fa
         { id: 'sellers', label: 'Sellers', icon: Store },
         { id: 'inventory', label: 'Inventory & Stock', icon: Warehouse },
         { id: 'shipping', label: 'Shipping & Delivery', icon: Truck },
-        { id: 'payments', label: 'Payments & Finance', icon: CreditCard }
+        { id: 'payments', label: 'Payments & Finance', icon: CreditCard },
+        { id: 'payment-gateway', label: 'Payment Gateway', icon: QrCode }
       ]
     },
     {

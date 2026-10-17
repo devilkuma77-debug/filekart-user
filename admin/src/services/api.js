@@ -233,14 +233,28 @@ export const adminApi = {
     return await res.json();
   },
 
-  // Settings
+  // Settings & Payment Gateway
   async getSettings() {
     const res = await fetch(`${API_BASE}/settings`);
     return await res.json();
   },
 
   async updateSettings(data) {
-    const res = await fetch(`${API_BASE}/admin/settings`, {
+    const res = await fetch(`${API_BASE}/settings`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(data)
+    });
+    return await res.json();
+  },
+
+  async getPaymentGateway() {
+    const res = await fetch(`${API_BASE}/settings`);
+    return await res.json();
+  },
+
+  async updatePaymentGateway(data) {
+    const res = await fetch(`${API_BASE}/settings`, {
       method: 'PUT',
       headers: getHeaders(),
       body: JSON.stringify(data)

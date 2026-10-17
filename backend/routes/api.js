@@ -66,8 +66,13 @@ router.post('/support/tickets', supportCtrl.createTicket);
 router.get('/sellers', sellerCtrl.getSellers);
 router.post('/sellers/register', sellerCtrl.registerSeller);
 
-// --- General Settings ---
+// --- General Settings & Payment Gateways ---
 router.get('/settings', settingsCtrl.getSettings);
+router.put('/settings', settingsCtrl.updateSettings);
+router.post('/settings', settingsCtrl.updateSettings);
+router.get('/payment-gateway', settingsCtrl.getSettings);
+router.put('/payment-gateway', settingsCtrl.updateSettings);
+router.put('/admin/settings', settingsCtrl.updateSettings);
 
 // ================= ADMIN ROUTES =================
 router.get('/admin/analytics/dashboard', analyticsCtrl.getDashboardStats);

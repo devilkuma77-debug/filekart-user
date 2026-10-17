@@ -13,6 +13,7 @@ import SellersPage from './pages/SellersPage';
 import InventoryPage from './pages/InventoryPage';
 import ShippingPage from './pages/ShippingPage';
 import PaymentsPage from './pages/PaymentsPage';
+import PaymentGatewayPage from './pages/PaymentGatewayPage';
 import CouponsOffersPage from './pages/CouponsOffersPage';
 import BannersMarketingPage from './pages/BannersMarketingPage';
 import ReviewsPage from './pages/ReviewsPage';
@@ -151,6 +152,7 @@ export default function App() {
     inventory: 'Inventory & Warehouse Stock',
     shipping: 'Shipping Partners & Courier Logistics',
     payments: 'Payments & COD Reconciliation',
+    'payment-gateway': 'Payment Gateway & UPI Configurations',
     coupons: 'Marketing Coupons & Flash Offers',
     marketing: 'Homepage Banners & Advertising',
     reviews: 'Customer Reviews Moderation',
@@ -202,6 +204,7 @@ export default function App() {
           {activeTab === 'inventory' && <InventoryPage />}
           {activeTab === 'shipping' && <ShippingPage />}
           {activeTab === 'payments' && <PaymentsPage />}
+          {activeTab === 'payment-gateway' && <PaymentGatewayPage />}
           {activeTab === 'coupons' && <CouponsOffersPage />}
           {activeTab === 'marketing' && <BannersMarketingPage />}
           {activeTab === 'reviews' && <ReviewsPage />}

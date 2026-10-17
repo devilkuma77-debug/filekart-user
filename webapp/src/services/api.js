@@ -167,5 +167,15 @@ export const api = {
       body: JSON.stringify(data)
     });
     return await res.json();
+  },
+
+  // Store & Payment Settings
+  async getSettings() {
+    try {
+      const res = await fetch(`${API_BASE}/settings`);
+      return await res.json();
+    } catch {
+      return { success: false, settings: {} };
+    }
   }
 };

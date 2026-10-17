@@ -41,7 +41,21 @@ const memoryStore = {
     support_phone: '1800 202 9898',
     free_delivery_above: 500,
     cod_charge: 40,
-    tax_rate: 18
+    tax_rate: 18,
+    // Payment Gateway & UPI Configurations
+    upi_id: 'flipkart.pay@okaxis',
+    upi_payee_name: 'Flipkart Internet Pvt Ltd',
+    upi_merchant_code: 'FLIPKART',
+    upi_note: 'Flipkart Order Payment',
+    upi_gpay_vpa: 'flipkart.pay@okaxis',
+    upi_phonepe_vpa: 'flipkart.pay@ybl',
+    upi_paytm_vpa: 'flipkart.pay@paytm',
+    upi_qr_enabled: 'true',
+    upi_auto_verify: 'true',
+    gateway_upi_enabled: 'true',
+    gateway_cards_enabled: 'true',
+    gateway_netbanking_enabled: 'true',
+    gateway_cod_enabled: 'true'
   }
 };
 
