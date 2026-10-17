@@ -274,9 +274,9 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
   };
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '14px auto', padding: '0 12px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <div className="checkout-container-layout" style={{ maxWidth: '1280px', margin: '14px auto', padding: '0 12px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
       {/* Checkout Steps */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="checkout-steps-column" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {/* Step 1: Login */}
         <div style={{ backgroundColor: '#fff', borderRadius: '2px', boxShadow: '0 1px 2px rgba(0,0,0,0.08)', overflow: 'hidden' }}>
           <div style={{
@@ -852,7 +852,8 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
                                   border: upiVerified ? '1px solid #388e3c' : '1px solid #ccc',
                                   padding: '9px 12px',
                                   borderRadius: '2px',
-                                  width: '280px',
+                                  flex: '1 1 200px',
+                                  maxWidth: '100%',
                                   fontSize: '13px',
                                   outline: 'none'
                                 }}
@@ -868,7 +869,8 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
                                   borderRadius: '2px',
                                   fontWeight: 600,
                                   fontSize: '12px',
-                                  cursor: 'pointer'
+                                  cursor: 'pointer',
+                                  whiteSpace: 'nowrap'
                                 }}
                               >
                                 {upiVerified ? '✓ VERIFIED' : 'VERIFY'}
@@ -888,7 +890,9 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '6px',
-                                  textTransform: 'uppercase'
+                                  textTransform: 'uppercase',
+                                  flexGrow: 1,
+                                  justifyContent: 'center'
                                 }}
                               >
                                 <ExternalLink size={14} /> PAY NOW ₹{totals.finalPayable.toLocaleString()}
@@ -1025,7 +1029,7 @@ export default function CheckoutPage({ onOrderPlaced, onBackToCart }) {
       </div>
 
       {/* Right: Price Summary */}
-      <div style={{ width: '360px' }}>
+      <div className="checkout-summary-column" style={{ width: '360px' }}>
         <div style={{ backgroundColor: '#fff', borderRadius: '2px', boxShadow: '0 1px 2px rgba(0,0,0,0.08)' }}>
           <div style={{ padding: '14px 20px', borderBottom: '1px solid #f0f0f0', fontWeight: 600, color: '#878787', fontSize: '13px' }}>
             PRICE DETAILS

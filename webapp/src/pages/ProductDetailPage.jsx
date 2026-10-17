@@ -82,7 +82,7 @@ export default function ProductDetailPage({ product, onAddToCart, onBuyNow, onBa
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
       }}>
         {/* ================= LEFT GALLERY & ACTION BUTTONS ================= */}
-        <div>
+        <div className="detail-left-col">
           <div style={{ position: 'sticky', top: '80px' }}>
             <div className="detail-gallery-row" style={{ display: 'flex', gap: '14px', marginBottom: '20px' }}>
               {/* Vertical / Horizontal Thumbnail Strip */}
@@ -168,7 +168,7 @@ export default function ProductDetailPage({ product, onAddToCart, onBuyNow, onBa
         </div>
 
         {/* ================= RIGHT PRODUCT SPECIFICATIONS & OFFERS ================= */}
-        <div>
+        <div className="detail-right-col">
           {/* Title */}
           <h1 style={{ fontSize: '18px', fontWeight: 500, color: '#212121', lineHeight: 1.4, marginBottom: '8px' }}>
             {product.title}
@@ -219,9 +219,9 @@ export default function ProductDetailPage({ product, onAddToCart, onBuyNow, onBa
           {/* Color & Storage Variants Selector */}
           <div style={{ borderTop: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', padding: '16px 0', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {/* Color */}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ color: '#878787', fontSize: '13px', width: '100px', fontWeight: 500 }}>Color</span>
-              <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="detail-variant-row" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+              <span style={{ color: '#878787', fontSize: '13px', width: '80px', fontWeight: 500 }}>Color</span>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {['Black', 'Blue', 'Green', 'Titanium'].map(c => (
                   <button
                     key={c}
@@ -245,9 +245,9 @@ export default function ProductDetailPage({ product, onAddToCart, onBuyNow, onBa
             </div>
 
             {/* Storage */}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ color: '#878787', fontSize: '13px', width: '100px', fontWeight: 500 }}>Storage</span>
-              <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="detail-variant-row" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+              <span style={{ color: '#878787', fontSize: '13px', width: '80px', fontWeight: 500 }}>Storage</span>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {['128 GB', '256 GB', '512 GB'].map(s => (
                   <button
                     key={s}
@@ -363,8 +363,8 @@ export default function ProductDetailPage({ product, onAddToCart, onBuyNow, onBa
           <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '20px' }}>
             <h3 style={{ fontSize: '17px', fontWeight: 700, marginBottom: '16px' }}>Ratings & Reviews</h3>
 
-            <div style={{ display: 'flex', gap: '32px', backgroundColor: '#fafafa', padding: '20px', borderRadius: '4px', marginBottom: '20px', alignItems: 'center' }}>
-              <div style={{ textAlign: 'center', borderRight: '1px solid #e0e0e0', paddingRight: '32px' }}>
+            <div className="detail-ratings-summary" style={{ display: 'flex', gap: '32px', backgroundColor: '#fafafa', padding: '20px', borderRadius: '4px', marginBottom: '20px', alignItems: 'center' }}>
+              <div className="detail-ratings-score-box" style={{ textAlign: 'center', borderRight: '1px solid #e0e0e0', paddingRight: '32px' }}>
                 <div style={{ fontSize: '36px', fontWeight: 800, color: '#212121', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                   {product.rating || '4.6'} <Star size={24} fill="#388e3c" color="#388e3c" />
                 </div>

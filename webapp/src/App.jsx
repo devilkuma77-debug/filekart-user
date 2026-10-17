@@ -185,12 +185,14 @@ function ShopContent() {
         deliveryLocation={deliveryLocation}
       />
 
-      {/* Mobile Persistent Bottom Navigation Bar */}
-      <MobileBottomNav
-        currentPage={page}
-        onNavigate={navigateTo}
-        onOpenDrawer={() => setIsDrawerOpen(true)}
-      />
+      {/* Mobile Persistent Bottom Navigation Bar (Hidden on detail & checkout so buy/order buttons dock cleanly) */}
+      {page !== 'detail' && page !== 'checkout' && (
+        <MobileBottomNav
+          currentPage={page}
+          onNavigate={navigateTo}
+          onOpenDrawer={() => setIsDrawerOpen(true)}
+        />
+      )}
 
       {/* Flipkart Modals */}
       <LoginModal />

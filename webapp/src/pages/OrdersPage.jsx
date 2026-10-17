@@ -197,40 +197,41 @@ export default function OrdersPage({ onSelectProduct }) {
                   border: '1px solid #f0f0f0'
                 }}
               >
-                {/* Item Thumbnail */}
-                <div style={{ width: '90px', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img
-                    src={firstItem?.primary_image || 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=200'}
-                    alt="order item"
-                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                  />
-                </div>
+                {/* Main Info: Thumbnail and Details side-by-side */}
+                <div className="order-card-main-info" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', flex: 2 }}>
+                  <div style={{ width: '75px', height: '75px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, backgroundColor: '#fafafa', borderRadius: '4px', padding: '4px' }}>
+                    <img
+                      src={firstItem?.primary_image || 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=200'}
+                      alt="order item"
+                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                    />
+                  </div>
 
-                {/* Details */}
-                <div style={{ flex: 1.5 }}>
-                  <div style={{ fontWeight: 600, fontSize: '15px', color: '#212121', marginBottom: '4px' }}>
-                    {firstItem?.title || 'Flipkart Product'}
-                  </div>
-                  {order.items && order.items.length > 1 && (
-                    <div style={{ fontSize: '12px', color: '#2874f0', marginBottom: '4px' }}>
-                      + {order.items.length - 1} more items in this order
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: '14.5px', color: '#212121', marginBottom: '4px', lineHeight: 1.3 }}>
+                      {firstItem?.title || 'Flipkart Product'}
                     </div>
-                  )}
-                  <div style={{ fontSize: '12px', color: '#878787' }}>
-                    Order ID: <strong>{order.order_number}</strong>
-                  </div>
-                  <div style={{ fontSize: '12px', color: '#878787', marginTop: '2px' }}>
-                    Placed on: {new Date(order.created_at || Date.now()).toLocaleDateString('en-IN')}
+                    {order.items && order.items.length > 1 && (
+                      <div style={{ fontSize: '12px', color: '#2874f0', marginBottom: '4px' }}>
+                        + {order.items.length - 1} more items in this order
+                      </div>
+                    )}
+                    <div style={{ fontSize: '12px', color: '#878787' }}>
+                      Order ID: <strong>{order.order_number}</strong>
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#878787', marginTop: '2px' }}>
+                      Placed on: {new Date(order.created_at || Date.now()).toLocaleDateString('en-IN')}
+                    </div>
                   </div>
                 </div>
 
                 {/* Amount */}
-                <div style={{ width: '120px', fontWeight: 700, fontSize: '16px', color: '#212121' }}>
+                <div className="order-card-amount" style={{ width: '120px', fontWeight: 700, fontSize: '16px', color: '#212121' }}>
                   ₹{(order.total_amount || 0).toLocaleString()}
                 </div>
 
                 {/* Delivery Status */}
-                <div style={{ flex: 1 }}>
+                <div className="order-card-status" style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                     <div style={{
                       width: '10px',
@@ -248,7 +249,7 @@ export default function OrdersPage({ onSelectProduct }) {
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '140px' }}>
+                <div className="order-card-actions" style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '140px' }}>
                   <button
                     onClick={() => setActiveInvoice(order)}
                     style={{

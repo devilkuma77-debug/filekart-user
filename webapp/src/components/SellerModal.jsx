@@ -45,9 +45,10 @@ export default function SellerModal({ isOpen, onClose }) {
           backgroundColor: '#fff',
           width: '100%',
           maxWidth: '620px',
+          maxHeight: '90vh',
           borderRadius: '6px',
           boxShadow: '0 8px 30px rgba(0,0,0,0.25)',
-          overflow: 'hidden',
+          overflowY: 'auto',
           position: 'relative'
         }}
       >

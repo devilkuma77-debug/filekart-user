@@ -44,6 +44,7 @@ export default function WishlistPage({ onSelectProduct }) {
         {wishlist.map((item) => (
           <div
             key={item.id}
+            className="wishlist-item-row"
             style={{
               display: 'flex',
               gap: '24px',
@@ -52,46 +53,49 @@ export default function WishlistPage({ onSelectProduct }) {
               alignItems: 'center'
             }}
           >
-            <div
-              onClick={() => onSelectProduct(item)}
-              style={{ width: '100px', height: '100px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <img src={item.primary_image} alt={item.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-            </div>
-
-            <div style={{ flex: 1 }}>
+            {/* Main Info: Thumbnail and Details side-by-side */}
+            <div className="wishlist-item-main-info" style={{ display: 'flex', gap: '16px', alignItems: 'center', flex: 1, width: '100%' }}>
               <div
                 onClick={() => onSelectProduct(item)}
-                style={{ fontSize: '16px', fontWeight: 500, color: '#212121', cursor: 'pointer', marginBottom: '6px' }}
+                style={{ width: '80px', height: '80px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, backgroundColor: '#fafafa', borderRadius: '4px', padding: '4px' }}
               >
-                {item.title}
+                <img src={item.primary_image} alt={item.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span className="rating-badge">
-                  {item.rating || '4.5'} <Star size={10} fill="#fff" strokeWidth={0} />
-                </span>
-                <span style={{ fontSize: '12px', color: '#878787' }}>({(item.rating_count || 120).toLocaleString()})</span>
-              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  onClick={() => onSelectProduct(item)}
+                  style={{ fontSize: '15px', fontWeight: 500, color: '#212121', cursor: 'pointer', marginBottom: '6px', lineHeight: 1.3 }}
+                >
+                  {item.title}
+                </div>
 
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: '#212121' }}>
-                  ₹{(item.selling_price || 0).toLocaleString()}
-                </span>
-                {item.original_price > item.selling_price && (
-                  <>
-                    <span style={{ fontSize: '14px', color: '#878787', textDecoration: 'line-through' }}>
-                      ₹{(item.original_price || 0).toLocaleString()}
-                    </span>
-                    <span style={{ fontSize: '14px', color: '#388e3c', fontWeight: 600 }}>
-                      {item.discount_percent || 15}% off
-                    </span>
-                  </>
-                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                  <span className="rating-badge">
+                    {item.rating || '4.5'} <Star size={10} fill="#fff" strokeWidth={0} />
+                  </span>
+                  <span style={{ fontSize: '12px', color: '#878787' }}>({(item.rating_count || 120).toLocaleString()})</span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                  <span style={{ fontSize: '18px', fontWeight: 700, color: '#212121' }}>
+                    ₹{(item.selling_price || 0).toLocaleString()}
+                  </span>
+                  {item.original_price > item.selling_price && (
+                    <>
+                      <span style={{ fontSize: '13px', color: '#878787', textDecoration: 'line-through' }}>
+                        ₹{(item.original_price || 0).toLocaleString()}
+                      </span>
+                      <span style={{ fontSize: '13px', color: '#388e3c', fontWeight: 600 }}>
+                        {item.discount_percent || 15}% off
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+            <div className="wishlist-item-actions" style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
               <button
                 onClick={() => { addToCart(item); toggleWishlist(item); }}
                 style={{
@@ -111,10 +115,22 @@ export default function WishlistPage({ onSelectProduct }) {
 
               <button
                 onClick={() => toggleWishlist(item)}
-                style={{ background: 'none', color: '#878787', padding: '8px', cursor: 'pointer' }}
+                style={{
+                  background: 'none',
+                  color: '#878787',
+                  padding: '8px 14px',
+                  cursor: 'pointer',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  fontSize: '12px',
+                  fontWeight: 600
+                }}
                 title="Remove from Wishlist"
               >
-                <Trash2 size={18} />
+                <Trash2 size={15} /> REMOVE
               </button>
             </div>
           </div>

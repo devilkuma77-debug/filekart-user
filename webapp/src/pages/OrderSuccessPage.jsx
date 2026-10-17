@@ -6,7 +6,7 @@ export default function OrderSuccessPage({ order, onViewOrders, onContinueShoppi
   const [showInvoice, setShowInvoice] = useState(false);
 
   return (
-    <div style={{ maxWidth: '800px', margin: '40px auto', backgroundColor: '#fff', padding: '48px 32px', borderRadius: '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', textAlign: 'center' }}>
+    <div className="order-success-card" style={{ maxWidth: '800px', margin: '40px auto', backgroundColor: '#fff', padding: '48px 32px', borderRadius: '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', textAlign: 'center' }}>
       <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '72px', height: '72px', borderRadius: '50%', backgroundColor: '#e8f5e9', marginBottom: '20px' }}>
         <CheckCircle2 size={48} color="#388e3c" />
       </div>

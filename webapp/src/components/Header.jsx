@@ -16,11 +16,13 @@ import {
   Award,
   Smartphone,
   ChevronRight,
-  Menu
+  Menu,
+  ArrowLeft
 } from 'lucide-react';
 
 export default function Header({
   onNavigate,
+  currentPage = 'home',
   onOpenSellerModal,
   onOpenHelpModal,
   onOpenLocationModal,
@@ -80,22 +82,42 @@ export default function Header({
         {/* Top Mobile Bar: Hamburger, Brand, Login, Cart */}
         <div style={{ padding: '10px 14px 6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            {/* Hamburger Button */}
-            <button
-              onClick={onOpenDrawer}
-              style={{
-                background: 'none',
-                padding: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: '#212121'
-              }}
-              aria-label="Open Navigation Menu"
-            >
-              <Menu size={24} />
-            </button>
+            {/* Hamburger or Back Arrow Button */}
+            {currentPage && currentPage !== 'home' ? (
+              <button
+                onClick={() => onNavigate('home')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#212121'
+                }}
+                aria-label="Back to Home"
+              >
+                <ArrowLeft size={24} />
+              </button>
+            ) : (
+              <button
+                onClick={onOpenDrawer}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#212121'
+                }}
+                aria-label="Open Navigation Menu"
+              >
+                <Menu size={24} />
+              </button>
+            )}
 
             {/* Flipkart Yellow Pill Logo */}
             <div

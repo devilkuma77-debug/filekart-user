@@ -237,10 +237,16 @@ export default function CartPage({ onProceedToCheckout, onContinueShopping, onSe
           <div className="cart-place-order-bar" style={{
             padding: '16px 24px',
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             boxShadow: '0 -2px 10px 0 rgba(0,0,0,0.1)',
             backgroundColor: '#fff'
           }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: '11px', color: '#878787', textTransform: 'uppercase' }}>Total Amount</span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: '#212121' }}>₹{totals.finalPayable.toLocaleString()}</span>
+            </div>
+
             <button
               onClick={onProceedToCheckout}
               className="cart-place-order-btn"
@@ -248,8 +254,8 @@ export default function CartPage({ onProceedToCheckout, onContinueShopping, onSe
                 backgroundColor: '#fb641b',
                 color: '#fff',
                 fontWeight: 600,
-                fontSize: '16px',
-                padding: '14px 40px',
+                fontSize: '15px',
+                padding: '12px 36px',
                 borderRadius: '2px',
                 boxShadow: '0 1px 2px 0 rgba(0,0,0,0.2)',
                 textTransform: 'uppercase',

@@ -22,7 +22,7 @@ export default function InvoiceModal({ order, onClose }) {
           maxHeight: '90vh',
           borderRadius: '4px',
           overflowY: 'auto',
-          padding: '32px',
+          padding: '20px 16px',
           boxShadow: '0 8px 30px rgba(0,0,0,0.25)',
           position: 'relative'
         }}
@@ -35,7 +35,7 @@ export default function InvoiceModal({ order, onClose }) {
         </button>
 
         {/* Invoice Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #2874f0', paddingBottom: '16px', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #2874f0', paddingBottom: '16px', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <div style={{ fontSize: '24px', fontWeight: 800, color: '#2874f0', fontStyle: 'italic' }}>Flipkart</div>
             <div style={{ fontSize: '11px', color: '#666' }}>Tax Invoice / Bill of Supply / Cash Receipt</div>
@@ -47,7 +47,7 @@ export default function InvoiceModal({ order, onClose }) {
         </div>
 
         {/* Address and Sold By */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px', fontSize: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '24px', fontSize: '12px' }}>
           <div style={{ border: '1px solid #eee', padding: '12px', borderRadius: '4px' }}>
             <strong style={{ fontSize: '13px', color: '#212121' }}>Sold By:</strong>
             <p style={{ marginTop: '4px', color: '#555' }}>

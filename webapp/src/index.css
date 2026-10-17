@@ -1584,6 +1584,410 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
+/* ==========================================================================
+   COMPLETE END-TO-END MOBILE RESPONSIVENESS SYSTEM (FLIPKART UI)
+   ========================================================================== */
+
+/* 1. Header Visibility Control */
+.mobile-header-only {
+  display: none;
+}
+.desktop-header-only {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .mobile-header-only {
+    display: block !important;
+  }
+  .desktop-header-only {
+    display: none !important;
+  }
+  main {
+    padding-bottom: 76px !important; /* Prevents mobile bottom nav overlap */
+  }
+}
+
+/* 2. Hero Festive 3-Column Grid */
+.hero-festive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .hero-festive-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 10px 8px !important;
+  }
+}
+
+/* 3. TCL AI QLED TV Ad Banner */
+@media (max-width: 767px) {
+  .tcl-ad-container {
+    flex-direction: column !important;
+    padding: 16px 12px !important;
+    text-align: center !important;
+    gap: 14px !important;
+    min-height: auto !important;
+  }
+  .tcl-ad-left {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+  }
+  .tcl-ad-left h2 {
+    font-size: 24px !important;
+    justify-content: center !important;
+  }
+  .tcl-ad-left div {
+    font-size: 24px !important;
+  }
+}
+
+/* 4. Product Catalog / Listing Page */
+@media (max-width: 767px) {
+  .product-list-layout {
+    flex-direction: column !important;
+    padding: 0 6px !important;
+    margin: 8px auto !important;
+  }
+
+  .product-filters-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 82% !important;
+    max-width: 320px !important;
+    max-height: 100vh !important;
+    z-index: 2600 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 2px 0 20px rgba(0,0,0,0.3) !important;
+    border-radius: 0 !important;
+  }
+
+  .product-filters-sidebar.mobile-open {
+    transform: translateX(0) !important;
+  }
+
+  .mobile-sort-filter-bar {
+    display: flex !important;
+    position: sticky !important;
+    top: 56px !important;
+    z-index: 800 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .desktop-sorting-bar {
+    display: none !important;
+  }
+
+  .fk-product-list-row {
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 12px 10px !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+  }
+
+  .list-row-image-col {
+    width: 105px !important;
+    height: 105px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #fafafa !important;
+    border-radius: 4px !important;
+  }
+
+  .list-row-image-col img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .list-row-desc-col {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .list-row-title {
+    font-size: 13.5px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 4px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .list-row-price-col {
+    width: 100% !important;
+    padding-left: 0 !important;
+    margin-top: 4px !important;
+  }
+
+  .list-row-specs {
+    display: none !important;
+  }
+}
+
+/* 5. Product Detail Page */
+.product-detail-layout {
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 900px) {
+  .product-detail-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 16px 12px 76px 12px !important;
+    gap: 16px !important;
+  }
+
+  .detail-gallery-row {
+    flex-direction: column-reverse !important;
+    gap: 10px !important;
+  }
+
+  .detail-thumbnails-strip {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+  }
+
+  .detail-main-img-box {
+    height: 290px !important;
+  }
+
+  .detail-ratings-summary {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    padding: 14px !important;
+  }
+
+  .detail-ratings-score-box {
+    border-right: none !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 14px !important;
+  }
+
+  .detail-action-buttons {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    gap: 0 !important;
+    height: 52px !important;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.12) !important;
+    background: #ffffff !important;
+  }
+
+  .detail-action-buttons .btn-cart,
+  .detail-action-buttons .btn-buy {
+    border-radius: 0 !important;
+    height: 100% !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 5b. Spotlight Section Mobile */
+@media (max-width: 767px) {
+  .spotlight-item-card {
+    min-width: 175px !important;
+    max-width: 175px !important;
+    flex: 0 0 175px !important;
+    padding: 12px 10px !important;
+  }
+
+  .spotlight-img-box {
+    height: 120px !important;
+  }
+}
+
+/* 6. Cart Page */
+@media (max-width: 850px) {
+  .cart-page-layout {
+    flex-direction: column !important;
+    padding: 0 6px !important;
+    gap: 12px !important;
+  }
+
+  .cart-price-sidebar {
+    width: 100% !important;
+  }
+
+  .cart-item-row {
+    padding: 14px 10px !important;
+    gap: 12px !important;
+  }
+
+  .cart-item-row > div:first-child {
+    width: 80px !important;
+  }
+
+  .cart-item-row img {
+    max-height: 80px !important;
+  }
+
+  .cart-place-order-bar {
+    position: fixed !important;
+    bottom: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 950 !important;
+    background: #ffffff !important;
+    padding: 10px 16px !important;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.12) !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-top: 1px solid #e0e0e0 !important;
+  }
+}
+
+/* 7. Checkout Page */
+@media (max-width: 850px) {
+  .checkout-container-layout {
+    flex-direction: column !important;
+    padding: 0 6px !important;
+    gap: 12px !important;
+  }
+
+  .checkout-steps-column {
+    width: 100% !important;
+  }
+
+  .checkout-summary-column {
+    width: 100% !important;
+  }
+}
+
+/* 8. Orders Page */
+@media (max-width: 767px) {
+  .orders-header-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+
+  .orders-search-box {
+    width: 100% !important;
+  }
+
+  .order-card-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px 12px !important;
+    gap: 10px !important;
+  }
+
+  .order-card-main-info {
+    width: 100% !important;
+  }
+
+  .order-card-amount {
+    width: 100% !important;
+    font-size: 16px !important;
+    padding-top: 6px !important;
+    border-top: 1px dashed #f0f0f0 !important;
+  }
+
+  .order-card-status {
+    width: 100% !important;
+  }
+
+  .order-card-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
+  }
+
+  .order-card-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* 9. Account Page */
+@media (max-width: 767px) {
+  .account-layout {
+    flex-direction: column !important;
+    padding: 0 6px !important;
+    gap: 12px !important;
+  }
+
+  .account-sidebar {
+    width: 100% !important;
+  }
+
+  .account-content {
+    padding: 16px 14px !important;
+  }
+}
+
+/* 10. Wishlist Page */
+@media (max-width: 767px) {
+  .wishlist-item-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 14px 10px !important;
+    gap: 12px !important;
+  }
+
+  .wishlist-item-main-info {
+    width: 100% !important;
+  }
+
+  .wishlist-item-actions {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
+  }
+
+  .wishlist-item-actions button {
+    flex: 1 !important;
+    justify-content: center !important;
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* 11. Order Success Page */
+@media (max-width: 767px) {
+  .order-success-card {
+    margin: 16px 10px !important;
+    padding: 28px 16px !important;
+  }
+
+  .order-success-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .order-success-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
 
 
 

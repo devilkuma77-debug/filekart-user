@@ -295,7 +295,6 @@ export default function ProductListPage({ onSelectProduct, initialCategory, sear
       <div style={{ flex: 1, minWidth: 0 }}>
         {/* Mobile-Only Filter & Sort Bar */}
         <div className="mobile-sort-filter-bar" style={{
-          display: 'none',
           backgroundColor: '#fff',
           boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
           borderRadius: '4px',

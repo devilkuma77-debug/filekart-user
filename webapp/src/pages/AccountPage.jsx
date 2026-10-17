@@ -45,9 +45,9 @@ export default function AccountPage({ onNavigate }) {
   };
 
   return (
-    <div style={{ maxWidth: '1240px', margin: '14px auto', padding: '0 12px', display: 'flex', gap: '16px' }}>
+    <div className="account-layout" style={{ maxWidth: '1240px', margin: '14px auto', padding: '0 12px', display: 'flex', gap: '16px' }}>
       {/* Left Sidebar */}
-      <div style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="account-sidebar" style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {/* User Card */}
         <div style={{ backgroundColor: '#fff', padding: '16px', borderRadius: '2px', boxShadow: '0 1px 2px rgba(0,0,0,0.08)', display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div style={{ width: '50px', height: '50px', borderRadius: '50%', backgroundColor: '#2874f0', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: 700 }}>
@@ -119,7 +119,7 @@ export default function AccountPage({ onNavigate }) {
       </div>
 
       {/* Right Content */}
-      <div style={{ flex: 1, backgroundColor: '#fff', borderRadius: '2px', boxShadow: '0 1px 2px rgba(0,0,0,0.08)', padding: '24px' }}>
+      <div className="account-content" style={{ flex: 1, backgroundColor: '#fff', borderRadius: '2px', boxShadow: '0 1px 2px rgba(0,0,0,0.08)', padding: '24px' }}>
         {activeTab === 'profile' && (
           <div>
             <h2 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '20px' }}>Personal Information</h2>
@@ -194,7 +194,7 @@ export default function AccountPage({ onNavigate }) {
             {showAddAddr && (
               <form onSubmit={handleAddAddress} style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '4px', marginBottom: '20px', border: '1px solid #e0e0e0' }}>
                 <h4 style={{ marginBottom: '14px' }}>ADD ADDRESS</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '12px' }}>
                   <input
                     type="text"
                     required
@@ -212,7 +212,7 @@ export default function AccountPage({ onNavigate }) {
                     style={{ border: '1px solid #ccc', padding: '8px 12px' }}
                   />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '12px' }}>
                   <input
                     type="text"
                     required
@@ -240,7 +240,7 @@ export default function AccountPage({ onNavigate }) {
                     style={{ width: '100%', border: '1px solid #ccc', padding: '8px 12px' }}
                   />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '16px' }}>
                   <input
                     type="text"
                     placeholder="City *"
